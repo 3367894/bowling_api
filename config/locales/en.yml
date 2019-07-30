@@ -31,3 +31,7 @@
 
 en:
   hello: "Hello world"
+  game_creator:
+    errors:
+      player_name_is_invalid: "Player name \"%{name}\" is invalid"
+      players_list_is_empty: "Players list is empty"
