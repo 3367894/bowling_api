@@ -129,13 +129,13 @@ describe FrameUpdater do
                           status: :strike,
                           player_id: player.id,
                           first_bowl: 10,
-                          additional: 0,
+                          additional: 1,
                           number: 1,
                           closed: true,
                           game_id: player.game_id)
       subject.update
       prev_frame.reload
-      expect(prev_frame.additional).to eq(8)
+      expect(prev_frame.additional).to eq(9)
     end
 
     it 'not adds points to previous frame if third bowl of tenth frame' do

@@ -57,11 +57,13 @@ class FrameCreator < FrameHandler
   def add_points_to_previous
     return if last_players_frame.blank?
 
-    last_players_frame.update(additional: @points) unless last_players_frame.ordinary?
+    unless last_players_frame.ordinary?
+      last_players_frame.update(additional: last_players_frame.additional + @points)
+    end
 
     return if !last_players_frame.strike? || last_players_frame.number == 1
 
     prev_frame = Frame.where(player_id: @player_id, number: last_players_frame.number - 1).first
-    prev_frame.update(additional: @points) if prev_frame.strike?
+    prev_frame.update(additional: prev_frame.additional + @points) if prev_frame.strike?
   end
 end

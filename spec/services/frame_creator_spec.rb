@@ -114,7 +114,7 @@ describe FrameCreator do
       expect(prev_frame.additional).to eq(8)
     end
 
-    it 'adds points to previous frame is previous has strike' do
+    it 'adds points to previous frame if previous has strike' do
       prev_frame = create(:frame,
                           status: :strike,
                           player_id: player.id,
@@ -141,7 +141,7 @@ describe FrameCreator do
                        status: :strike,
                        player_id: player.id,
                        first_bowl: 10,
-                       additional: 0,
+                       additional: 2,
                        number: 2,
                        closed: true,
                        game_id: player.game_id)
@@ -150,7 +150,7 @@ describe FrameCreator do
       frame_1.reload
       frame_2.reload
       expect(frame_1.additional).to eq(8)
-      expect(frame_2.additional).to eq(8)
+      expect(frame_2.additional).to eq(10)
     end
   end
 end

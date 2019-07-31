@@ -29,7 +29,7 @@ class FrameUpdater < FrameHandler
   def closed?
     return true unless last_frame?
     return true if third_bowl?
-    return true unless spare?
+    return true unless frame.strike? || spare?
 
     false
   end
@@ -67,7 +67,9 @@ class FrameUpdater < FrameHandler
 
     return check_sum_of_bowls(frame.first_bowl) unless last_frame?
     return check_sum_of_bowls(frame.first_bowl) unless third_bowl? || frame.strike?
-    return check_sum_of_bowls(frame.second_bowl) if frame.strike? && frame.second_bowl < MAX_POINTS
+    if frame.strike? && frame.second_bowl.to_i < MAX_POINTS
+      return check_sum_of_bowls(frame.second_bowl)
+    end
 
     true
   end
@@ -77,7 +79,7 @@ class FrameUpdater < FrameHandler
   end
 
   def check_sum_of_bowls(points)
-    if points + @points > MAX_POINTS
+    if points.to_i + @points > MAX_POINTS
       add_error('too_much_points')
       return false
     end
@@ -92,6 +94,6 @@ class FrameUpdater < FrameHandler
 
     return if prev_frame.blank?
 
-    prev_frame.update(additional: @points) if prev_frame.strike?
+    prev_frame.update(additional: prev_frame.additional + @points) if prev_frame.strike?
   end
 end
