@@ -105,6 +105,7 @@ describe GamesController do
       player = body['players'].first
       expect(player['name']).to eq(player_1.name)
       expect(player['id']).to eq(player_1.id)
+      expect(player['total']).to eq(26)
       expect(player['frames'].size).to eq(2)
 
       frame = player['frames'].first
