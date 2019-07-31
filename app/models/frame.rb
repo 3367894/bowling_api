@@ -13,4 +13,10 @@ class Frame < ApplicationRecord
             numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
   validates :third_bowl, allow_nil: true,
             numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+
+  def total
+    total = first_bowl.to_i + second_bowl.to_i + additional
+    total += third_bowl.to_i if number == FrameHandler::LAST_FRAME_NUMBER
+    total
+  end
 end

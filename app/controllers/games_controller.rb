@@ -8,6 +8,10 @@ class GamesController < ApplicationController
     end
   end
 
+  def show
+    @game = Game.includes(players: :frames).find(params[:id])
+  end
+
   private
   def permitted_params
     params.require(:game).permit(players_list: [])
