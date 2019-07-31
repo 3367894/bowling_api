@@ -3,8 +3,9 @@ require 'rails_helper'
 describe FramesController do
   render_views
 
+  let(:player) { create(:player) }
+
   describe '#create' do
-    let(:player) { create(:player) }
     let(:params) { { game_id: player.game_id, frame: { player_id: player.id, points: 8 } } }
 
     it 'has success response' do
@@ -44,6 +45,38 @@ describe FramesController do
 
         body = JSON.parse(response.body)
         expect(body['errors']).to eq([I18n.t('frames.errors.player_is_not_exists')])
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:frame) do
+      create(:frame, number: 1, player_id: player.id, game_id: player.game_id, first_bowl: 1)
+    end
+    let(:params) { { game_id: player.game_id, id: frame.id, frame: { points: 8 } } }
+
+    it 'has success response' do
+      patch :update, params: params, format: :json
+      expect(response).to be_successful
+    end
+
+    it 'updates frame' do
+      patch :update, params: params, format: :json
+
+      frame.reload
+      expect(frame.second_bowl).to eq(8)
+      expect(frame.closed).to be_truthy
+    end
+
+    context 'with errors' do
+      it 'returns errors from frame update' do
+        patch :update, format: :json,
+             params: { game_id: player.game_id, id: -1, frame: { points: 8 } }
+        expect(response).not_to be_successful
+        expect(response.status).to eq(400)
+
+        body = JSON.parse(response.body)
+        expect(body['errors']).to eq([I18n.t('frames.errors.frame_is_not_exists')])
       end
     end
   end

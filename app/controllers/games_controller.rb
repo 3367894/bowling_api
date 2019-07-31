@@ -6,8 +6,6 @@ class GamesController < ApplicationController
     else
       render status: 400, json: { errors: creator.errors }
     end
-  rescue ActionController::ParameterMissing => e
-    render status: 400, json: { errors: [e.message] }
   end
 
   private

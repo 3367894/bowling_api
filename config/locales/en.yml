@@ -41,4 +41,7 @@ en:
       game_is_finished: "Game is finished"
       game_is_not_exists: "Game is not exists"
       player_is_not_exists: "Player is not exists"
+      frame_is_not_exists: "Frame is not exists"
+      too_much_points: "Too much points"
+      frame_is_closed: "Frame is closed"
 
