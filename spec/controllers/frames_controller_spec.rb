@@ -71,12 +71,31 @@ describe FramesController do
     context 'with errors' do
       it 'returns errors from frame update' do
         patch :update, format: :json,
-             params: { game_id: player.game_id, id: -1, frame: { points: 8 } }
+              params: { game_id: player.game_id, id: -1, frame: { points: 8 } }
         expect(response).not_to be_successful
         expect(response.status).to eq(400)
 
         body = JSON.parse(response.body)
         expect(body['errors']).to eq([I18n.t('frames.errors.frame_is_not_exists')])
+      end
+    end
+
+    context 'finish game' do
+      let(:frame) do
+        create(:frame,
+               number: 10,
+               player_id: player.id,
+               game_id: player.game_id,
+               first_bowl: 1
+        )
+      end
+
+      it 'finishes game' do
+        patch :update, params: params, format: :json
+
+        game = player.game
+        game.reload
+        expect(game.finished_at).not_to be_nil
       end
     end
   end

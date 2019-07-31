@@ -11,6 +11,9 @@ class FramesController < ApplicationController
   def update
     updater = FrameUpdater.new(frame_update_params)
     if updater.update
+      if updater.frame.closed? && updater.frame.number == FrameHandler::LAST_FRAME_NUMBER
+        GameFinisher.check_and_finish(params[:game_id])
+      end
       head :ok
     else
       render status: 400, json: { errors: updater.errors }

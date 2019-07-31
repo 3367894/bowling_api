@@ -13,6 +13,10 @@ class FrameUpdater < FrameHandler
     end
   end
 
+  def frame
+    @frame ||= Frame.find_by(id: @frame_id)
+  end
+
   private
 
   def attributes
@@ -72,10 +76,6 @@ class FrameUpdater < FrameHandler
     end
 
     true
-  end
-
-  def frame
-    @frame ||= Frame.find_by(id: @frame_id)
   end
 
   def check_sum_of_bowls(points)
