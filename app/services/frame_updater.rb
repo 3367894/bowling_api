@@ -1,6 +1,4 @@
 class FrameUpdater < FrameHandler
-  LAST_FRAME_NUMBER = 10
-
   def initialize(game_id:, frame_id:, points:)
     super(game_id: game_id, points: points)
     @frame_id = frame_id
@@ -9,7 +7,10 @@ class FrameUpdater < FrameHandler
   def update
     return false unless check_data
 
-    frame.update(attributes)
+    Frame.transaction do
+      add_points_to_previous
+      frame.update(attributes)
+    end
   end
 
   private
@@ -81,5 +82,16 @@ class FrameUpdater < FrameHandler
       return false
     end
     true
+  end
+
+  def add_points_to_previous
+    return if frame.number == 1
+    return if third_bowl?
+
+    prev_frame = Frame.where(player_id: frame.player_id, number: frame.number - 1).first
+
+    return if prev_frame.blank?
+
+    prev_frame.update(additional: @points) if prev_frame.strike?
   end
 end

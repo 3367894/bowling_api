@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_200242) do
+ActiveRecord::Schema.define(version: 2019_07_31_185725) do
 
   create_table "frames", force: :cascade do |t|
     t.integer "status", default: 0
@@ -19,12 +19,13 @@ ActiveRecord::Schema.define(version: 2019_07_30_200242) do
     t.integer "first_bowl"
     t.integer "second_bowl"
     t.integer "third_bowl"
-    t.integer "additional"
+    t.integer "additional", default: 0
     t.integer "player_id"
     t.integer "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_frames_on_game_id"
+    t.index ["number"], name: "index_frames_on_number"
     t.index ["player_id"], name: "index_frames_on_player_id"
   end
 

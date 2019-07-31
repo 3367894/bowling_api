@@ -1,5 +1,6 @@
 class FrameHandler
   MAX_POINTS = 10
+  LAST_FRAME_NUMBER = 10
 
   attr_reader :frame, :errors
 

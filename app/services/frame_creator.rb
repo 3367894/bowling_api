@@ -15,10 +15,13 @@ class FrameCreator < FrameHandler
     )
     if @points == MAX_POINTS
       @frame.status = :strike
-      @frame.closed = true
+      @frame.closed = last_number != LAST_FRAME_NUMBER - 1
     end
 
-    @frame.save
+    Frame.transaction do
+      add_points_to_previous
+      @frame.save
+    end
   end
 
   private
@@ -49,5 +52,16 @@ class FrameCreator < FrameHandler
 
   def player
     @player ||= Player.where(game_id: @game_id).find_by(id: @player_id)
+  end
+
+  def add_points_to_previous
+    return if last_players_frame.blank?
+
+    last_players_frame.update(additional: @points) unless last_players_frame.ordinary?
+
+    return if !last_players_frame.strike? || last_players_frame.number == 1
+
+    prev_frame = Frame.where(player_id: @player_id, number: last_players_frame.number - 1).first
+    prev_frame.update(additional: @points) if prev_frame.strike?
   end
 end

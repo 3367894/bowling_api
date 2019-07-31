@@ -7,7 +7,7 @@ class CreateFrames < ActiveRecord::Migration[5.2]
       t.integer :first_bowl
       t.integer :second_bowl
       t.integer :third_bowl
-      t.integer :additional
+      t.integer :additional, default: 0
       t.references :player, foreign_key: true
       t.references :game, foreign_key: true
 
