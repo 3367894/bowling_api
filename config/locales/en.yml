@@ -31,3 +31,17 @@
 
 en:
   hello: "Hello world"
+  game_creator:
+    errors:
+      player_name_is_invalid: "Player name \"%{name}\" is invalid"
+      players_list_is_empty: "Players list is empty"
+  frames:
+    errors:
+      has_not_closed_frame: "Not closed frame exists"
+      game_is_finished: "Game is finished"
+      game_is_not_exists: "Game is not exists"
+      player_is_not_exists: "Player is not exists"
+      frame_is_not_exists: "Frame is not exists"
+      too_much_points: "Too much points"
+      frame_is_closed: "Frame is closed"
+
